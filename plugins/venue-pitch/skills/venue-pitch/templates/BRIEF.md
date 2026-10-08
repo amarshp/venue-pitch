@@ -45,6 +45,7 @@ Creativity will be judged, alongside polish and whether it actually works.
 - Mobile first. Almost every visitor arrives from Instagram or Google Maps on a phone, often on mobile data.
   The motion must stay smooth on a mid-range phone, and the page must never trap the user's scroll.
   Make sure every scroll-driven animation actually moves as the page scrolls. With CSS scroll timelines, an ancestor with `overflow: hidden` silently freezes the animation; use `overflow: clip`.
+  Firefox (and browsers built on it) has no CSS scroll-driven animations, so the motion must also work there: drive it with JavaScript, or load the scroll-timeline polyfill only where `CSS.supports("animation-timeline", "view()")` is false. The polyfill only reads plain top-level rules, not rules inside `@supports` or `@media`, and not ranges the CSS minifier has shortened (for example `entry 0% cover 40%` becomes `entry cover 40%`).
 - Respect `prefers-reduced-motion` with a calm version that still looks designed.
 - Fast: production build, optimised images, no layout shift; aim for Lighthouse mobile performance 90+. Readable contrast everywhere, keyboard and screen-reader friendly.
 - `npm run build` and `npm run lint` pass with no errors.
