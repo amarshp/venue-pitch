@@ -25,6 +25,7 @@ For the pitch itself, use a fixed address, such as a named tunnel on a domain or
   - seven scores with evidence;
   - problems with frame references;
   - a verdict.
+- **Check that the animations play:** run `scripts/anim-check.mjs <url>` at phone and desktop size on each site. It exits non-zero and names the scroller when a scroll-driven animation is frozen; put any it finds in the fix pass.
 - **Confirm the judge's bug reports in the code before passing them on.**
 - **Report to the user:**
   - the mapping;

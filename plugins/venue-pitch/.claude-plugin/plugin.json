@@ -1,7 +1,7 @@
 {
   "name": "venue-pitch",
   "description": "End-to-end website pitch for a bar, restaurant or venue: research, competitor audit, content and photo pack, 2-3 concept sites built by isolated agents, blind judging, fix pass, and a sourced slide deck.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": {
     "name": "amarshp"
   },
