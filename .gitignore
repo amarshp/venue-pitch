@@ -1,0 +1,7 @@
+# Never commit credentials or local settings
+*token*
+.env
+.env.*
+config.local.*
+__pycache__/
+node_modules/

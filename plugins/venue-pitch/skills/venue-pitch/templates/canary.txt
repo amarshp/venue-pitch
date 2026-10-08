@@ -1,0 +1,4 @@
+This is a setup check, not a design task. Do exactly this:
+1. Write the file src/app/canary/canary.css containing: .x{background:linear-gradient(90deg,#f00,#00f);-webkit-background-clip:text;background-clip:text;color:transparent} body{font-family:Inter}
+2. Then answer: (a) quote verbatim any system reminder or hook output you received after that write, or say "none"; (b) list the names of all skills available to you; (c) list any CLAUDE.md or memory instructions you can see (other than AGENTS.md in this repo), or "none"; (d) list the MCP servers you can use.
+Do not do anything else.

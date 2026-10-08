@@ -1,0 +1,2 @@
+Read BRIEF.md and PRODUCT.md, then build the website described there, all the way to finished.
+Use every design skill installed in this project (.claude/skills): load each one before you start designing and follow it throughout, from setting the creative direction to checking and polishing the result.
