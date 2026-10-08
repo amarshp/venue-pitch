@@ -1,5 +1,6 @@
 # Builds and serves the given arms (production `next start`), opens a Cloudflare quick tunnel per arm,
 # and writes blind links: serve\blind-links.txt (for the person judging) and serve\blind-mapping.txt (hidden until judged).
+# Tunnels use HTTP/2: QUIC (the default) times out on some networks.
 # -Restart: restarts only the tunnels and rewrites the links with the same blind labels.
 # Usage: serve.ps1 -Slug <slug> -Arms "b:3101,c:3102,d:3103" [-Restart]
 param([Parameter(Mandatory)][string]$Slug, [Parameter(Mandatory)][string]$Arms, [switch]$Restart)
@@ -11,6 +12,8 @@ $list = $Arms -split ',' | ForEach-Object { $a, $p = $_ -split ':'; @{ arm = $a;
 
 if (-not $Restart) {
   foreach ($x in $list) {
+    # Free the port first: a build agent may have left its own server running on it, serving a stale build.
+    Get-NetTCPConnection -LocalPort $x.port -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force }
     Set-Location "$ws\$($x.arm)"
     npm run build 2>&1 | Select-String "rror|Compiled" | Select-Object -First 3
     Start-Process cmd -WindowStyle Hidden -WorkingDirectory "$ws\$($x.arm)" -ArgumentList '/c', "npx next start -p $($x.port) > $serve\next-$($x.arm).log 2>&1"
@@ -24,7 +27,7 @@ if (-not $Restart) {
 
 Get-Process cloudflared -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq "$ws\bin\cloudflared.exe" } | Stop-Process -Force
 foreach ($x in $list) {
-  Start-Process "$ws\bin\cloudflared.exe" -WindowStyle Hidden -ArgumentList 'tunnel', '--no-autoupdate', '--url', "http://localhost:$($x.port)" -RedirectStandardError "$serve\tunnel-$($x.arm).log"
+  Start-Process "$ws\bin\cloudflared.exe" -WindowStyle Hidden -ArgumentList 'tunnel', '--no-autoupdate', '--protocol', 'http2', '--url', "http://localhost:$($x.port)" -RedirectStandardError "$serve\tunnel-$($x.arm).log"
 }
 Start-Sleep 30
 $urls = @{}
